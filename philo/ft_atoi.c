@@ -1,43 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/07 11:31:25 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/04/10 06:45:43 by mel-harc         ###   ########.fr       */
+/*   Created: 2023/04/29 16:21:43 by mel-harc          #+#    #+#             */
+/*   Updated: 2023/04/29 16:22:01 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	parsing(char *str)
+int	ft_atoi(const char *str)
 {
-	int	sign;
+	unsigned int	i;
+	int				sign;
+	size_t			rest;
 
+	i = 0;
 	sign = 1;
-	while (*str == '-' || *str == '+' || *str == ' ')
+	rest = 0;
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
 	{
-		if (*str == '-' )
+		if (str[i] == '-')
 			sign *= -1;
-		str++;
+		i++;
 	}
-	if (sign == -1 || *str == '\0')
-		return (1);
-	while (*str)
+	while (str[i] >= 48 && str[i] <= 57)
 	{
-		if (!ft_isdigit(*str))
-			return (1);
-		str++;
+		rest = rest * 10 + str[i] - 48;
+		if (rest > 9223372036854775807 && sign == -1)
+			return (0);
+		else if (rest > 9223372036854775807 && sign == 1)
+			return (-1);
+		i++;
 	}
-	return (0);
-}
-
-int	ft_isdigit(int c)
-{
-	if (c >= 48 && c <= 57)
-		return (1);
-	else
-		return (0);
+	return (rest * sign);
 }

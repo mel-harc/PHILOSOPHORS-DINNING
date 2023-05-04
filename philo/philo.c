@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 11:31:28 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/05/03 19:44:59 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/05/04 23:04:35 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ int	main(int ac, char **av)
 			return (-1);
 		if(init_data(timer_data, av) || creat_philo(&philo, timer_data))
 			return (-1);
-		// init_mutex(&philo);
-		creat_thread(&philo);
+		creat_thread(&philo, timer_data);
 		return (0);	
 	}
 	else

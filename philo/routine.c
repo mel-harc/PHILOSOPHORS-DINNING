@@ -6,48 +6,61 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:22:10 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/05/03 20:07:32 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/05/04 23:41:50 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	eat(t_philo *ph)
+void	eating(t_philo *ph)
 {
+	size_t	time_now;
+	
+	time_now = get_timer();
 	pthread_mutex_lock(&ph->fork);
-	// ft_write(ph, "take a fork", get_timer() - ph->time_init);
+	printing(ph, time_now - ph->time_init , "take a fork left");
 	pthread_mutex_lock(&ph->next->fork);
-	// // ft_write(ph, "take a fork", get_timer() - ph->time_init);
-	// // wait_for_eat(ph, get_timer());
-	// pthread_mutex_unlock(&ph->fork);
-	// pthread_mutex_unlock(&ph->next->fork);
+	printing(ph, time_now - ph->time_init, "take a fork right");
+	printing(ph, time_now - ph->time_init, "is eating");
+	waiting(ph, time_now);
+	ph->cnt_eat++;
+	ph->last_eating = get_timer();
+	pthread_mutex_unlock(&ph->fork);
+	pthread_mutex_unlock(&ph->next->fork);
 	return ;
 }
 
-// void	sleep(t_philo *philo, t_timer *time)
-// {
-// 	pthread_mutex_lock(&philo->fork);
-// 	printf("id : %d\tsleeping\n");
-// 	ft_usleep(time->time_to_sleep);
-// 	pthread_mutex_unlock(&philo->fork);
-// 	return ;
-// }
-
-void	wait_for_eat(t_philo *ph, int time)
+void	sleeping(t_philo *philo)
 {
-	while (1)
-	{
-		if (get_timer() - time < ph->timer->time_to_eat)
-			usleep(1);
-		else
-			return ;
-	}
+	size_t	time_now;
+	
+	time_now = get_timer();
+	printing(philo, time_now - philo->time_init, "is sleeping");
+	waiting(philo, time_now);
 	return ;
 }
 
-void	ft_write(t_philo *ph, char *str, size_t time)
+void	thinking(t_philo *philo)
 {
-	pthread_mutex_lock(&ph->timer->write);
-	printf("%zu\t%d\t%s\n", time,ph->id, str);
-	pthread_mutex_unlock(&ph->timer->write);
+	size_t	time_now;
+	
+	time_now = get_timer();
+	printing(philo, time_now - philo->time_init, "is thinking");
+}
+
+void	waiting(t_philo *ph, int time)
+{
+	size_t	time_now;
+
+	time_now = get_timer();
+	while (time_now - time < ph->data->time_to_eat)
+		usleep(1);
+	return ;
+}
+
+void	printing(t_philo *ph, size_t time, char *str)
+{	
+	pthread_mutex_lock(&ph->data->write);
+	printf("%zu\t%d\t%s\n", time, ph->id, str);
+	pthread_mutex_unlock(&ph->data->write);
 }

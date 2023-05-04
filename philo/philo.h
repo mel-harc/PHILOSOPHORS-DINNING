@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 11:31:30 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/05/03 19:57:57 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/05/04 23:08:53 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,15 @@ typedef	struct s_timer
 
 typedef struct  s_philo
 {
-	int				id;
+	int			id;
 	pthread_mutex_t	fork;
 	pthread_t		thread;
 	struct s_philo	*next;
-	struct s_timer	*timer;
-	int				time_init;
+	struct s_timer	*data;
+	size_t			time_init;
 	struct s_philo	*head;
+	size_t			cnt_eat;
+	size_t			last_eating;
 } t_philo;
 
 int		parsing(char *str);
@@ -49,14 +51,16 @@ int		ft_atoi(const char *str);
 int		init_data(t_timer *data, char **av);
 int		creat_philo(t_philo *philo, t_timer *timer_data);
 void	init_mutex(t_philo *philo);
-int		lst_add_back(t_philo *philo, t_philo *new_philo);
-t_philo	*lstnew_philo(int i);
+int		lst_add_back(t_timer *timer, t_philo *philo, t_philo *new_philo);
+t_philo	*lstnew_philo(t_timer *philo, int i);
 void	*routine(void *philo);
 size_t	get_timer();
-void	eat(t_philo *ph);
-void	creat_thread(t_philo *philo);
-void	wait_for_eat(t_philo *ph, int time);
-void	ft_write(t_philo *ph, char *str, size_t time);
+void	eating(t_philo *ph);
+void	sleeping(t_philo *philo);
+void	creat_thread(t_philo *philo, t_timer *timer);
+void	waiting(t_philo *ph, int time);
+void	thinking(t_philo *philo);
+void	printing(t_philo *ph, size_t time, char *str);
 
 
 #endif

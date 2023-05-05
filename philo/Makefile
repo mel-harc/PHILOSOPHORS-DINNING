@@ -9,7 +9,7 @@ FLAGS = -Wall -Werror -Wextra
 NAME = philo
 
 SRC = philo.c parsing.c ft_atoi.c init_data.c creat_philo.c error.c \
-		creat_thread.c routine.c time.c
+		creat_thread.c routine.c time.c check_is_died.c
 
 OBJ = $(SRC:.c=.o)
 

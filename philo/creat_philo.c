@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 16:09:14 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/05/05 22:47:48 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/05/07 17:51:13 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	creat_philo(t_philo *philo, t_timer *timer_data)
 	
 	i = 1;
 	philo->head = NULL;
+	if (timer_data->nbr_philo == 0)
+		return (1);
 	while (i <= timer_data->nbr_philo)
 		if (lst_add_back(timer_data, philo, lstnew_philo(timer_data, i++)))
 			return (1);

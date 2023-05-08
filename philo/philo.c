@@ -6,11 +6,16 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 11:31:28 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/05/05 22:44:45 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/05/08 17:52:44 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	k()
+{
+	system("leaks philo");
+}
 
 int	main(int ac, char **av)
 {
@@ -31,6 +36,7 @@ int	main(int ac, char **av)
 		if(init_data(timer_data, av) || creat_philo(&philo, timer_data))
 			return (-1);
 		creat_thread(&philo, timer_data);
-		check_is_died(&philo);
+		check_is_died(&philo, timer_data);
+		// atexit(k);
 	}
 }

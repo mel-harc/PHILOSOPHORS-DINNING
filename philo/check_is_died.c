@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 21:25:36 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/05/08 17:50:22 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/05/09 22:25:01 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	check_is_died(t_philo *philo, t_timer *time_data)
 	
 	tmp = NULL;
 	tmp = philo->head;
+	int t;
+	
 	while (1)
 	{
 		usleep(1000);
@@ -26,7 +28,10 @@ void	check_is_died(t_philo *philo, t_timer *time_data)
 			burial_philo(tmp, time_data);
 			return ;
 		}
-		if (get_timer() - tmp->last_eating >= tmp->data->time_to_die)
+		pthread_mutex_lock(&tmp->data->lst);
+		t = tmp->last_eating;
+		pthread_mutex_unlock(&tmp->data->lst);
+		if (get_timer() - t >= tmp->data->time_to_die)
 		{
 			printing(tmp, get_timer() - tmp->data->time_init, "died");
 			burial_philo(tmp, time_data);
@@ -43,13 +48,17 @@ int	check_nb_eat(t_philo *head)
 {
 	t_philo *tmp;
 	int		i;
+	int		t;
 
 	tmp = NULL;
 	tmp = head;
 	i = 0;
 	while (tmp)
 	{
-		if (tmp->cnt_eat == tmp->data->nb_eat)
+		pthread_mutex_lock(&tmp->data->nbr);
+		t = tmp->cnt_eat;
+		pthread_mutex_unlock(&tmp->data->nbr);
+		if (t == tmp->data->nb_eat)
 			i++;
 		tmp = tmp->next;
 		if (!tmp)
@@ -69,17 +78,21 @@ void	burial_philo(t_philo *head, t_timer *data_time)
 	
 	tmp = NULL;
 	tmp_2 = NULL;
-	tmp = head;
+	tmp = head->next;
+	pthread_mutex_lock(&tmp->data->lst);
+	pthread_mutex_destroy(&tmp->data->lst);
+	pthread_mutex_lock(&tmp->data->nbr);
+	pthread_mutex_destroy(&tmp->data->nbr);
 	while (tmp)
 	{
-		pthread_mutex_destroy(&tmp->fork);
-		pthread_mutex_destroy(&tmp->data->write);
 		tmp_2 = tmp;
-		free(tmp);
-		tmp = tmp_2->next;
+		tmp = tmp->next;
+		pthread_mutex_destroy(&tmp->fork);
+		free(tmp_2);
 		if (tmp == head)
 			break ;
 	}
+	free(head);
 	free(data_time);
 	return ;
 }

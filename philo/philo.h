@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 11:31:30 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/05/08 17:15:53 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/05/09 21:38:44 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ typedef	struct s_timer
 	int	nb_eat;	
 	int	time_init;
 	pthread_mutex_t	write;
+	pthread_mutex_t	lst;
+	pthread_mutex_t	wait;
+	pthread_mutex_t	nbr;
 } t_timer;
 
 typedef struct  s_philo
@@ -64,5 +67,7 @@ void	printing(t_philo *ph, size_t time, char *str);
 int		check_nb_eat(t_philo *head);
 void	check_is_died(t_philo *philo, t_timer *time_data);
 void	burial_philo(t_philo *head, t_timer *data_time);
+void	count(t_philo *ph);
+void	lasteat(t_philo *ph);
 
 #endif

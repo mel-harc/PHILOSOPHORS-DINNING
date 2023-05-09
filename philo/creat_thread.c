@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:44:51 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/05/07 19:14:20 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/05/09 22:09:57 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ void	*routine(void *philo)
 {
 	t_philo	*ph;
 	ph = (t_philo *)philo;
+	pthread_mutex_lock(&ph->data->lst);
 	ph->last_eating = get_timer();
+	pthread_mutex_unlock(&ph->data->lst);
 	if (ph->id % 2 == 0)
 		usleep(1000);
 	while (1)
@@ -33,11 +35,24 @@ void	creat_thread(t_philo *philo, t_timer *timer)
 	
 	tmp = philo->head;
 	timer->time_init = get_timer();
+	pthread_mutex_init(&tmp->data->nbr, NULL);
+	pthread_mutex_init(&tmp->data->wait, NULL);
+	pthread_mutex_init(&tmp->data->write, NULL);
+	pthread_mutex_init(&tmp->data->lst, NULL);
 	while (tmp)
 	{
 		pthread_mutex_init(&tmp->fork, NULL);
 		pthread_create(&tmp->thread, NULL, &routine, tmp);
+		// pthread_detach(tmp->thread);
+		if (tmp->id == timer->nbr_philo)
+			break ;
+		tmp = tmp->next;
+	}
+	tmp = philo->head;
+	while (tmp)
+	{
 		pthread_detach(tmp->thread);
+		// pthread_detach(tmp->thread);
 		if (tmp->id == timer->nbr_philo)
 			break ;
 		tmp = tmp->next;

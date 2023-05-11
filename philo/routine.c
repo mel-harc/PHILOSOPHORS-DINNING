@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:22:10 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/05/10 17:38:08 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/05/11 01:30:55 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,6 @@ void	eating(t_philo *ph)
 {
 	pthread_mutex_lock(&ph->fork);
 	printing(ph, get_timer() - ph->data->time_init, "has taken a fork");
-	if (!ph->next)
-	{
-		waiting(ph, get_timer(), 'm');
-		return ;
-	}
 	pthread_mutex_lock(&ph->next->fork);
 	printing(ph, get_timer() - ph->data->time_init, "has taken a fork");
 	printing(ph, get_timer() - ph->data->time_init, "is eating");

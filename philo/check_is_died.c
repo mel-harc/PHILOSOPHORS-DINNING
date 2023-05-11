@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 21:25:36 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/05/10 17:49:15 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/05/11 01:37:05 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int	check_nb_eat(t_philo *head)
 {
 	t_philo	*tmp;
 	int		i;
-	int		t;
 
 	tmp = NULL;
 	tmp = head;
@@ -53,19 +52,17 @@ int	check_nb_eat(t_philo *head)
 	while (tmp)
 	{
 		pthread_mutex_lock(&tmp->data->nbr);
-		t = tmp->cnt_eat;
-		pthread_mutex_unlock(&tmp->data->nbr);
-		if (t == tmp->data->nb_eat)
+		if (tmp->cnt_eat == tmp->data->nb_eat)
 			i++;
+		pthread_mutex_unlock(&tmp->data->nbr);
 		tmp = tmp->next;
-		if (!tmp)
-			break ;
 		if (tmp->id == tmp->data->nbr_philo)
 			break ;
 	}
 	if (i == head->data->nbr_philo)
 		return (1);
-	return (0);
+	else
+		return (0);
 }
 
 void	burial_philo(t_philo *head, t_timer *data_time)
@@ -89,7 +86,8 @@ void	burial_philo(t_philo *head, t_timer *data_time)
 		if (tmp == head)
 			break ;
 	}
-	free(head);
+	if (data_time->nbr_philo != 1)
+		free(head);
 	free(data_time);
 	return ;
 }

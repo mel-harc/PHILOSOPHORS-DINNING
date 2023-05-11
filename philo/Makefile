@@ -6,7 +6,7 @@
 #    By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/08 19:42:14 by mel-harc          #+#    #+#              #
-#    Updated: 2023/05/10 17:38:54 by mel-harc         ###   ########.fr        #
+#    Updated: 2023/05/11 01:23:47 by mel-harc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC = cc
 
 RM = rm -rf
 
-FLAGS = -g -Wall -Werror -Wextra  -fsanitize=thread
+FLAGS = -Wall -Werror -Wextra 
 
 NAME = philo
 
@@ -31,7 +31,7 @@ all : $(NAME)
 	$(CC) $(FLAGS) -c $< -o $@
 
 $(NAME) : $(OBJ) $(HEADER)
-		$(CC) $(OBJ) $(FLAGS) -o $(NAME)
+		$(CC) $(OBJ) -o $(NAME)
 
 clean : 
 	$(RM) $(OBJ)

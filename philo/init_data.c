@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 20:12:38 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/05/10 17:12:30 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/05/11 01:27:37 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,5 @@ int	init_data(t_timer *timer_data, char **av)
 	}
 	else
 		timer_data->nb_eat = -1;
-	pthread_mutex_init(&timer_data->write, NULL);
 	return (0);
 }

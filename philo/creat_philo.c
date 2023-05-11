@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 16:09:14 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/05/10 17:29:37 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/05/10 21:39:25 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,26 @@ int	lst_add_back(t_timer *timer, t_philo *philo, t_philo *new_philo)
 	t_philo	*tmp;
 
 	tmp = NULL;
+	(void)timer;
 	if (!new_philo)
 		return (1);
 	if (!philo->head)
+	{
 		philo->head = new_philo;
+		philo->head->next = new_philo;
+	}
 	else
 	{
 		tmp = philo->head;
 		while (tmp)
 		{
-			if (!tmp->next)
+			if ((tmp->id == 1 && tmp->next->id == 1) || \
+			(tmp->id != 1 && tmp->next->id == 1))
 				break ;
 			tmp = tmp->next;
 		}
 		tmp->next = new_philo;
-		if (new_philo->id == timer->nbr_philo)
-			new_philo->next = philo->head;
+		new_philo->next = philo->head;
 	}
 	return (0);
 }

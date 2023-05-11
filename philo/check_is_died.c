@@ -6,7 +6,7 @@
 /*   By: mel-harc <mel-harc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 21:25:36 by mel-harc          #+#    #+#             */
-/*   Updated: 2023/05/11 01:37:05 by mel-harc         ###   ########.fr       */
+/*   Updated: 2023/05/11 13:47:42 by mel-harc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,14 @@ int	check_nb_eat(t_philo *head)
 	tmp = NULL;
 	tmp = head;
 	i = 0;
-	while (tmp)
+	while (tmp && tmp->data->nb_eat != -1)
 	{
 		pthread_mutex_lock(&tmp->data->nbr);
-		if (tmp->cnt_eat == tmp->data->nb_eat)
+		if (tmp->cnt_eat >= tmp->data->nb_eat)
 			i++;
 		pthread_mutex_unlock(&tmp->data->nbr);
 		tmp = tmp->next;
-		if (tmp->id == tmp->data->nbr_philo)
+		if (tmp == head)
 			break ;
 	}
 	if (i == head->data->nbr_philo)
